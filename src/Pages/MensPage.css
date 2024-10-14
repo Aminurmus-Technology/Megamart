@@ -1,13 +1,12 @@
 .page-container {
-    background-color:#b4b2b2;
+    background-color:#f4f4f4;
     display: flex;
-    margin:auto;
-    width: 96%; /* Full viewport width */
+    margin-left:2%;
+    width: 98%; /* Full viewport width */
     height: 100vh; /* Full viewport height */
   }
   .navbar-filters {
     width: 25%;
-    
     overflow-y: auto;
     scrollbar-width: none;
     padding: 0px; 
@@ -29,9 +28,13 @@
   }
   .navbar-header-line{
     width:100%;
+    
   }
   .navbar-header-line h2{
-    font-size:18px;
+    font-size:17px;
+    text-align:center;
+    font-weight:550;
+    padding:10px;
   }
   .navbar-filters-mobile{
     display:none;
@@ -55,6 +58,7 @@
     font-weight:550;
     padding:20px;
     padding-top:0px;
+    font-size:24px;
     
   }
   .product-display-item{
@@ -132,9 +136,10 @@
 /* 
   styling for the filters start here */
   .filters-head {
-    font-size:24px;
+    text-align:center;
+    font-size:28px;
     font-weight:550;
-    padding-top:0px;
+    padding:10px;
     border-bottom:2px solid rgb(122, 122, 122);
   }
   .navbar-filters{
@@ -409,7 +414,7 @@ input[type="checkbox"] {
     .navbar-filters-mobile {
       display:block;
       position: fixed;
-      top: 0;
+      top: 90px;
       width: 100%;
       background-color: white;
       z-index: 1000;
@@ -418,25 +423,16 @@ input[type="checkbox"] {
       
       
     }
-    .navbar-start-mobile{
-       overflow-x:scroll;
-       display:flex;
-       flex-direction:row;
-       justify-content:space-around;
-         
-    }
     .navbar-filters-mobile {
-      position: absolute;
-      top: 0px;
-      width: 95%;
+      position:absolute;
+      top: 90px;
+      width: 98%;
       margin:auto;
       background-color: white;
       z-index: 1000;
       padding: 10px;
       border-bottom: 1px solid #ccc;
-      min-width:200px;
-  
-      
+      min-width:200px;  
     }
     .navbar-start-mobile{
        overflow-x:scroll;
@@ -554,7 +550,8 @@ input[type="checkbox"] {
       padding: 8px 12px;
       border-radius:20px;
       margin-right:10px;
-      
+      background-color:#f4f4f4;
+      border:2px solid #4a4a4a;
 }
 .filters-head-mobile {
       font-size: 1.5rem;
@@ -654,7 +651,10 @@ input[type="checkbox"] {
      width:100%;
    }
    .navbar-header-line-mobile h2{
-     font-size:2.6vw;
+     font-size:20px;
+     font-weight:600;
+     text-align:center;
+     padding:8px;
    }
 }
 @media (max-width: 560px){
@@ -709,7 +709,10 @@ input[type="checkbox"] {
     font-size:16px;
   }
   .navbar-header-line-mobile h2{
-    font-size:14px;
+    font-size:16px;
+    font-weight:600;
+    text-align:center;
+    padding:8px;
   }
   .product-desc span{
     margin-left:0px;
@@ -726,7 +729,19 @@ input[type="checkbox"] {
 .for-margin{
   margin-right:10px;
 }
-
+@media (max-width: 640px) {
+    .navbar-filters-mobile {
+        position:absolute;
+        top: 180px;
+        width: 98%;
+        margin:auto;
+        background-color: white;
+        z-index: 1000;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        min-width:200px;  
+      }
+}
   
 
   
