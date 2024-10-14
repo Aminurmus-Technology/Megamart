@@ -5,6 +5,7 @@
     width: 98%; /* Full viewport width */
     height: 100vh; /* Full viewport height */
   }
+  
   .navbar-filters {
     width: 25%;
     overflow-y: auto;
