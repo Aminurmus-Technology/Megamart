@@ -3,18 +3,19 @@ import Footer from "./Pages/Footer"
 import Navbar from './Components/Navbar'
 import Banner from './Components/Banner'
 import Grocery from './Pages/Grocery'
+import LandingPage from './Pages/LandingPage'
+import FashionPage from './Pages/FashionPage'
 
 function App() {
   
 
   return (
     <>
-     <Navbar/>
-     <div className='bg-gray-900'>
-      <Grocery/>
-     </div> 
-     <Banner/>
-     <Footer/>
+    <Navbar bgColor="#E9E9E9" />
+     <div className='bg-[#F5F5F5]'>
+        <FashionPage/>
+     </div>
+     <Footer bgColor="#D5006D" />
     </>
   )
 }
