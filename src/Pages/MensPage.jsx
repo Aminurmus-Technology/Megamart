@@ -437,7 +437,7 @@ useEffect(()=>{
   <label className="highlight-mobile">CATEGORIES</label>
   <div className="for-margin"><button onClick={() => toggleDropdown('type')} className="dropdown-toggle-mobile">
    
-    Categories
+    Type
   </button></div>
   {isDropdownOpen.type && (
     <div className="dropdown-menu-mobile">
