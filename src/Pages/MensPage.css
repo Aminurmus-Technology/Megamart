@@ -173,7 +173,21 @@
     margin-right:3px; /* Smooth rotation transition */
 }
 
+.category-selection{
+  margin-left:20px;
+  font-size:15px;
+}
+.type-section{
+  border-bottom:2px solid rgb(122, 122, 122);
+}
+.category{
+  margin-bottom:5px;
+}
+.category :hover{
   
+  cursor:pointer;
+  font-weight:600;
+}
   .brand-selection{
     display:flex;
     flex-direction:column;
