@@ -11,6 +11,7 @@
     overflow-y: auto;
     scrollbar-width: none;
     padding: 0px; 
+    border:1px solid rgb(222, 222, 222);
     box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1); 
   }
   .navbar-filters::-webkit-scrollbar {
