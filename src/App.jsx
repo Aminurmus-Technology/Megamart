@@ -10,7 +10,7 @@ import { Routes,Route } from 'react-router-dom'
 import WomenPage from './Pages/WomensPages'
 import KidsPages from './Pages/KidsPages'
 import GroceryPages from './Pages/Grocery'
-
+import BeautyLandingPg from './Pages/beautyLandingPg'
 
 function App() {
   
