@@ -25,6 +25,8 @@ function App() {
       <Route path='/category/women' element={<WomenPage/>}/>  
       <Route path='/category/baby-kids' element={<KidsPages/>}/>  
       <Route path='/grocery' element={<GroceryPages/>}/> 
+      <Route path='/beauty-landing' element={<BeautyLandingPg/>}/> 
+
         
     </Routes>
      <Footer bgColor="#D5006D" />
