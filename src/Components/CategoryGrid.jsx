@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const categories = [
   { name: "Grocery", imgSrc: "/images/grocery.svg",linkPages:"/grocery" },
-  { name: "Beauty", imgSrc: "/images/beauty.svg",linkPages:"/beauty" },
+  { name: "Beauty", imgSrc: "/images/beauty.svg",linkPages:"/beauty-landing" },
   { name: "Fashion", imgSrc: "/images/fashion.svg" ,linkPages:"/fashion"},
   { name: "Home & Kitchen", imgSrc: "/images/home-kitchen.svg",linkPages:"/home-kitchen" },
 ];

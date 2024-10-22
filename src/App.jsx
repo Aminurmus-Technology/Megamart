@@ -11,6 +11,8 @@ import WomenPage from './Pages/WomensPages'
 import KidsPages from './Pages/KidsPages'
 import GroceryPages from './Pages/Grocery'
 import ProductDetail from './Pages/ProductDetail'
+import BeautyLandingPg from './Pages/beautyLandingPg'
+
 
 function App() {
   
@@ -25,6 +27,8 @@ function App() {
       <Route path='/category/women' element={<WomenPage/>}/>  
       <Route path='/category/baby-kids' element={<KidsPages/>}/>  
       <Route path='/grocery' element={<GroceryPages/>}/> 
+      <Route path='/beauty-landing' element={<BeautyLandingPg/>}/> 
+
         
     </Routes>
      <Footer bgColor="#D5006D" />

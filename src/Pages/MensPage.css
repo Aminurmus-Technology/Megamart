@@ -11,6 +11,7 @@
     overflow-y: auto;
     scrollbar-width: none;
     padding: 0px; 
+    border:1px solid rgb(222, 222, 222);
     box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1); 
   }
   .navbar-filters::-webkit-scrollbar {
@@ -173,7 +174,21 @@
     margin-right:3px; /* Smooth rotation transition */
 }
 
+.category-selection{
+  margin-left:20px;
+  font-size:15px;
+}
+.type-section{
+  border-bottom:2px solid rgb(122, 122, 122);
+}
+.category{
+  margin-bottom:5px;
+}
+.category :hover{
   
+  cursor:pointer;
+  font-weight:600;
+}
   .brand-selection{
     display:flex;
     flex-direction:column;
