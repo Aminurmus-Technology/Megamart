@@ -5,6 +5,22 @@ import './MensPage.css';
 import MensItemPage from './MensItemPage';
 import { useParams } from 'react-router-dom';
 function MensPage() {
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+ 
+    setSelectedType([]);
+    setSelectedBrand([]);
+    setSelectedModel([]);
+    setSelectedRating([]);
+    setSelectedDiscount([]);
+  };
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(true); // State for category dropdown
+  const toggleCategoryDropdown = () => {
+    setIsCategoryDropdownOpen((prevState) => !prevState); // Toggle the category dropdown
+  };
+  
+  
       const [priceRange, setPriceRange] = useState([0, 5000]);
   const [selectedDiscount, setSelectedDiscount] = useState('');
   const [selectedType, setSelectedType] = useState('');
@@ -45,6 +61,7 @@ useEffect(()=>{
   useEffect(() => {
     const updatedFilteredData = menData.filter((item) => {
       return (
+        (selectedCategory === '' || item.category === selectedCategory) &&
         (selectedType.length === 0 || selectedType.includes(item.type)) &&
         (selectedBrand.length === 0 || selectedBrand.includes(item.brand)) &&
         (selectedModel.length === 0 || selectedModel.includes(item.model)) &&
@@ -128,36 +145,50 @@ useEffect(()=>{
            <h1 className="filters-head">Filters</h1>
 
            {/* Type selection */}
-           <div className="type-selection">
+           <div className="type-section">
              <label className="highlight">CATEGORIES</label>
-             <button onClick={() => toggleDropdown('type')} className="dropdown-toggle">
-  {isDropdownOpen.type ? (
+             
+<button onClick={toggleCategoryDropdown} className="dropdown-toggle">
+  {isCategoryDropdownOpen ? (
     <img src="/src/assets/MenWear/arrowup.png" alt="Up Arrow" className="arrow-icon" />
   ) : (
     <img src="/src/assets/MenWear/arrowdown.png" alt="Down Arrow" className="arrow-icon" />
   )}
   Categories & Accessories
 </button>
+<div className="category-selection"> 
+  {isCategoryDropdownOpen && (
+    <div className="dropdown-menu">
+      <div className="category" key="Winter Wear" onClick={() => handleCategorySelect('Winter Wear')}>
+        <label>{'Winter Wear'}</label>
+      </div>
+      <div className="category" key="Top Wear" onClick={() => handleCategorySelect('Top Wear')}>
+        <label>{'Top Wear'}</label>
+      </div>
+      <div className="category" key="Bottom Wear" onClick={() => handleCategorySelect('Bottom Wear')}>
+        <label>{'Bottom Wear'}</label>
+      </div>
+      <div className="category" key="Inner Wear" onClick={() => handleCategorySelect('Inner Wear')}>
+        <label>{'Inner Wear'}</label>
+      </div>
+      <div className="category" key="Ethnic Wear" onClick={() => handleCategorySelect('Ethnic Wear')}>
+        <label>{'Ethnic Wear'}</label>
+      </div>
+      <div className="category" key="Clothing Accessories" onClick={() => handleCategorySelect('Clothing Accessories')}>
+        <label>{'Clothing Accessories'}</label>
+      </div>
+      <div className="category" key="Blazers & Waistcoats" onClick={() => handleCategorySelect('Blazers & Waistcoats')}>
+        <label>{'Blazers & Waistcoats'}</label>
+      </div>
+      <div className="category" key="Co-ords" onClick={() => handleCategorySelect('Co-ords')}>
+        <label>{'Co-ords'}</label>
+      </div>
+    </div>
+  )}
+</div>
 
+</div>
 
-
- {isDropdownOpen.type && (
-              <div className="dropdown-menu">
-                {['Mens Plain Tshirts', 'Dress Shirt', 'Jeans', 'Hoodie', 'Blazer', 'Jacket'].map((type) => (
-                  <div className="type" key={type}>
-                    <input
-                      type="checkbox"
-                      id={type}
-                      value={type}
-                      checked={selectedType.includes(type)}
-                      onChange={() => handleMultiSelect(type, setSelectedType, selectedType)}
-                    />
-                    <label htmlFor={type}>{type}</label>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
 
           {/* Brand selection */}
           <div className="brand-selection">
@@ -335,6 +366,36 @@ useEffect(()=>{
             )}
           </div>
 
+          {/* Type selection */}
+ <div className="discount-selection">
+            
+<button onClick={() => toggleDropdown('type')} className="dropdown-toggle"> TYPE
+  {isDropdownOpen.type ? (
+    <img src="/src/assets/MenWear/arrowup.png" alt="Up Arrow" className="arrow-icon" />
+  ) : (
+    <img src="/src/assets/MenWear/arrowdown.png" alt="Down Arrow" className="arrow-icon" />
+  )}
+ 
+</button>
+
+ {isDropdownOpen.type && (
+              <div className="dropdown-menu">
+                {['Mens Plain Tshirts', 'Dress Shirt', 'Jeans', 'Hoodie', 'Blazer', 'Jacket'].map((type) => (
+                  <div className="type" key={type}>
+                    <input
+                      type="checkbox"
+                      id={type}
+                      value={type}
+                      checked={selectedType.includes(type)}
+                      onChange={() => handleMultiSelect(type, setSelectedType, selectedType)}
+                    />
+                    <label htmlFor={type}>{type}</label>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
 
         </div>
       </div>
@@ -376,7 +437,7 @@ useEffect(()=>{
   <label className="highlight-mobile">CATEGORIES</label>
   <div className="for-margin"><button onClick={() => toggleDropdown('type')} className="dropdown-toggle-mobile">
    
-    Categories
+    Type
   </button></div>
   {isDropdownOpen.type && (
     <div className="dropdown-menu-mobile">

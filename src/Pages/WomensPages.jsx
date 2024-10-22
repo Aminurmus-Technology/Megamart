@@ -2,9 +2,26 @@ import React, { useState,useEffect } from 'react'
 import { womenData} from '../Data/women';
 
 import './MensPage.css';
-import MensItemPage from './MensItemPage';
+import WomensItemPage from './WomensItemPage';
 import { useParams } from 'react-router-dom';
-function MensPage() {
+
+function WomensPage() {
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+ 
+    setSelectedType([]);
+    setSelectedBrand([]);
+    setSelectedModel([]);
+    setSelectedRating([]);
+    setSelectedDiscount([]);
+  };
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(true); // State for category dropdown
+  const toggleCategoryDropdown = () => {
+    setIsCategoryDropdownOpen((prevState) => !prevState); // Toggle the category dropdown
+  };
+  
+  
       const [priceRange, setPriceRange] = useState([0, 5000]);
   const [selectedDiscount, setSelectedDiscount] = useState('');
   const [selectedType, setSelectedType] = useState('');
@@ -43,8 +60,9 @@ useEffect(()=>{
   
   const [filteredMenData, setFilteredMenData] = useState([]); 
   useEffect(() => {
-    const updatedFilteredData =  womenData.filter((item) => {
+    const updatedFilteredData = womenData.filter((item) => {
       return (
+        (selectedCategory === '' || item.category === selectedCategory) &&
         (selectedType.length === 0 || selectedType.includes(item.type)) &&
         (selectedBrand.length === 0 || selectedBrand.includes(item.brand)) &&
         (selectedModel.length === 0 || selectedModel.includes(item.model)) &&
@@ -55,7 +73,7 @@ useEffect(()=>{
     });
   
     setFilteredMenData(updatedFilteredData); // Update the filtered data state
-  }, [ womenData, selectedType, selectedBrand, selectedModel, selectedRating, selectedDiscount, priceRange]); // Re-run filter when any dependency changes
+  }, [womenData, selectedType, selectedBrand, selectedModel, selectedRating, selectedDiscount, priceRange]); // Re-run filter when any dependency changes
   
   
 
@@ -118,46 +136,60 @@ useEffect(()=>{
        <div className="navbar-filters">
          <div className="navbar-header">
            <div className="navbar-header-photo">
-             <img src="/src/assets/MenWear/header.jpg" alt="Header Image" />
+             <img src="/src/assets/Woman/womenhead.jpg" alt="Header Image" />
            </div>
            <div className="navbar-header-line">
-             <h2>MODERN MEN'S FASHION</h2>
+             <h2>MODERN WOMEN'S FASHION</h2>
            </div>
          </div>
          <div className="navbar-start">
            <h1 className="filters-head">Filters</h1>
 
            {/* Type selection */}
-           <div className="type-selection">
+           <div className="type-section">
              <label className="highlight">CATEGORIES</label>
-             <button onClick={() => toggleDropdown('type')} className="dropdown-toggle">
-  {isDropdownOpen.type ? (
+             
+<button onClick={toggleCategoryDropdown} className="dropdown-toggle">
+  {isCategoryDropdownOpen ? (
     <img src="/src/assets/MenWear/arrowup.png" alt="Up Arrow" className="arrow-icon" />
   ) : (
     <img src="/src/assets/MenWear/arrowdown.png" alt="Down Arrow" className="arrow-icon" />
   )}
   Categories & Accessories
 </button>
+<div className="category-selection"> 
+  {isCategoryDropdownOpen && (
+    <div className="dropdown-menu">
+      <div className="category" key="Winter Wear" onClick={() => handleCategorySelect('Winter Wear')}>
+        <label>{'Winter Wear'}</label>
+      </div>
+      <div className="category" key="Top Wear" onClick={() => handleCategorySelect('Top Wear')}>
+        <label>{'Top Wear'}</label>
+      </div>
+      <div className="category" key="Bottom Wear" onClick={() => handleCategorySelect('Bottom Wear')}>
+        <label>{'Bottom Wear'}</label>
+      </div>
+      <div className="category" key="Inner Wear" onClick={() => handleCategorySelect('Inner Wear')}>
+        <label>{'Inner Wear'}</label>
+      </div>
+      <div className="category" key="Ethnic Wear" onClick={() => handleCategorySelect('Ethnic Wear')}>
+        <label>{'Ethnic Wear'}</label>
+      </div>
+      <div className="category" key="Western Wear" onClick={() => handleCategorySelect('Western Wear')}>
+        <label>{'Western Wear'}</label>
+      </div>
+      <div className="category" key="Sarees" onClick={() => handleCategorySelect('Sarees')}>
+        <label>{'Sarees'}</label>
+      </div>
+      <div className="category" key="Co-ords" onClick={() => handleCategorySelect('Co-ords')}>
+        <label>{'Co-ords'}</label>
+      </div>
+    </div>
+  )}
+</div>
 
+</div>
 
-
- {isDropdownOpen.type && (
-              <div className="dropdown-menu">
-                {['Mens Plain Tshirts', 'Dress Shirt', 'Jeans', 'Hoodie', 'Blazer', 'Jacket'].map((type) => (
-                  <div className="type" key={type}>
-                    <input
-                      type="checkbox"
-                      id={type}
-                      value={type}
-                      checked={selectedType.includes(type)}
-                      onChange={() => handleMultiSelect(type, setSelectedType, selectedType)}
-                    />
-                    <label htmlFor={type}>{type}</label>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
 
           {/* Brand selection */}
           <div className="brand-selection">
@@ -165,12 +197,12 @@ useEffect(()=>{
       <div className="type">
         <input
           type="checkbox"
-          id="nike"
-          value="Nike"
-          checked={selectedBrand.includes("Nike")}
-          onChange={() => handleMultiSelect("Nike", setSelectedBrand, selectedBrand)}
+          id="zara"
+          value="Zara"
+          checked={selectedBrand.includes("Zara")}
+          onChange={() => handleMultiSelect("Zara", setSelectedBrand, selectedBrand)}
         />
-        <label htmlFor="nike">Nike</label>
+        <label htmlFor="zara">Zara</label>
       </div>
       <div className="type">
         <input
@@ -185,42 +217,42 @@ useEffect(()=>{
       <div className="type">
         <input
           type="checkbox"
-          id="adidas"
-          value="Adidas"
-          checked={selectedBrand.includes("Adidas")}
-          onChange={() => handleMultiSelect("Adidas", setSelectedBrand, selectedBrand)}
+          id="Forever 21"
+          value="Forever 21"
+          checked={selectedBrand.includes("Forever 21")}
+          onChange={() => handleMultiSelect("Forever 21", setSelectedBrand, selectedBrand)}
         />
-        <label htmlFor="adidas">Adidas</label>
+        <label htmlFor="Forever 21">Forever 21</label>
       </div>
       <div className="type">
         <input
           type="checkbox"
-          id="Ralph Lauren"
-          value="Ralph Lauren"
-          checked={selectedBrand.includes("Ralph Lauren")}
-          onChange={() => handleMultiSelect("Ralph Lauren", setSelectedBrand, selectedBrand)}
+          id="Gap"
+          value="Gap"
+          checked={selectedBrand.includes("Gap")}
+          onChange={() => handleMultiSelect("Gap", setSelectedBrand, selectedBrand)}
         />
-        <label htmlFor="Ralph Lauren">Ralph Lauren</label>
+        <label htmlFor="Gap">Gap</label>
       </div>
       <div className="type">
         <input
           type="checkbox"
-          id="Under Armour"
-          value="Under Armour"
-          checked={selectedBrand.includes("Under Armour")}
-          onChange={() => handleMultiSelect("Under Armour", setSelectedBrand, selectedBrand)}
+          id="Lululemon"
+          value="Lululemon"
+          checked={selectedBrand.includes("Lululemon")}
+          onChange={() => handleMultiSelect("Lululemon", setSelectedBrand, selectedBrand)}
         />
-        <label htmlFor="Under Armour">Under Armour</label>
+        <label htmlFor="Lululemon">Lululemon</label>
       </div>
       <div className="type">
         <input
           type="checkbox"
-          id="Tommy Hilfiger"
-          value="Tommy Hilfiger"
-          checked={selectedBrand.includes("Tommy Hilfiger")}
-          onChange={() => handleMultiSelect("Tommy Hilfiger", setSelectedBrand, selectedBrand)}
+          id="Hollister"
+          value="Hollister"
+          checked={selectedBrand.includes("Hollister")}
+          onChange={() => handleMultiSelect("Hollister", setSelectedBrand, selectedBrand)}
         />
-        <label htmlFor="Tommy Hilfiger">Tommy Hilfiger</label>
+        <label htmlFor="Hollister">Hollister</label>
       </div>
     </div>
 
@@ -263,7 +295,7 @@ useEffect(()=>{
 </button>
             {isDropdownOpen.model && (
               <div className="dropdown-menu">
-                {['Sporty Tee', 'ClassicFit', '511 Slim Fit'].map((model) => (
+                {['Flowy Maxi', 'Classic Silk', '501 Skinny' ,'Utility Jumpsuit'].map((model) => (
                   <div className="type" key={model}>
                     <input
                       type="checkbox"
@@ -335,6 +367,36 @@ useEffect(()=>{
             )}
           </div>
 
+          {/* Type selection */}
+ <div className="discount-selection">
+            
+<button onClick={() => toggleDropdown('type')} className="dropdown-toggle"> TYPE
+  {isDropdownOpen.type ? (
+    <img src="/src/assets/MenWear/arrowup.png" alt="Up Arrow" className="arrow-icon" />
+  ) : (
+    <img src="/src/assets/MenWear/arrowdown.png" alt="Down Arrow" className="arrow-icon" />
+  )}
+ 
+</button>
+
+ {isDropdownOpen.type && (
+              <div className="dropdown-menu">
+                {['Dress', 'Blouse', 'Jeans', 'Jumpsuit', 'Skirt', 'Sweater'].map((type) => (
+                  <div className="type" key={type}>
+                    <input
+                      type="checkbox"
+                      id={type}
+                      value={type}
+                      checked={selectedType.includes(type)}
+                      onChange={() => handleMultiSelect(type, setSelectedType, selectedType)}
+                    />
+                    <label htmlFor={type}>{type}</label>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
 
         </div>
       </div>
@@ -376,11 +438,11 @@ useEffect(()=>{
   <label className="highlight-mobile">CATEGORIES</label>
   <div className="for-margin"><button onClick={() => toggleDropdown('type')} className="dropdown-toggle-mobile">
    
-    Categories
+    Type
   </button></div>
   {isDropdownOpen.type && (
     <div className="dropdown-menu-mobile">
-      {['Mens Plain Tshirts', 'Dress Shirt', 'Jeans', 'Hoodie', 'Blazer', 'Jacket'].map((type) => (
+      {['Dress', 'Blouse', 'Jeans', 'Jumpsuit', 'Skirt', 'Sweater'].map((type) => (
         <div className="type-mobile" key={type}>
           <input
             type="checkbox"
@@ -408,7 +470,7 @@ useEffect(()=>{
   </button></div>
   {isDropdownOpen.brand && (
     <div className="dropdown-menu-mobile">
-      {['Nike', 'Adidas', 'Levi’s', 'Tommy Hilfiger', 'Under Armour', 'Ralph Lauren'].map((brand) => (
+      {['Zara', 'Forever 21', 'Levi’s', 'Hollister', '', 'Gap'].map((brand) => (
         <div className="type-mobile" key={brand}>
           <input
             type="checkbox"
@@ -526,17 +588,17 @@ useEffect(()=>{
     >
       <div className="navbar-header-mobile">
         <div className="navbar-header-photo-mobile">
-          <img src="/src/assets/MenWear/header.jpg" alt="Header Image" />
+          <img src="/src/assets/Woman/womenhead.jpg" alt="Header Image" />
         </div>
         <div className="navbar-header-line-mobile">
-          <h2>MODERN MEN'S FASHION</h2>
+          <h2>MODERN WOMEN'S FASHION</h2>
         </div>
       </div>
       <h1 className="main-content-head">CLOTHING & ACCESSORIES</h1>
       <div className="product-display-item">
         {filteredMenData && filteredMenData.length > 0 ? (
           filteredMenData.map((item) => (
-            <MensItemPage
+            <WomensItemPage
               key={item.id}
               id={item.id}
               model={item.model}
@@ -561,4 +623,7 @@ useEffect(()=>{
   
 }
 
-export default MensPage
+export default WomensPage
+
+
+
