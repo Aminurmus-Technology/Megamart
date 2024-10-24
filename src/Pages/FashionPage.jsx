@@ -6,7 +6,7 @@ import SectionBar from "../Components/SectionBar";
 const FashionPage = () => {
   return (
     <div>
-      <SectionBar/>
+      <SectionBar />
       <div className="pt-4">
         <Poster backgroundImage={"/images/FashionPoster.svg"} opacity={"70%"} />
       </div>
