@@ -5,6 +5,7 @@ import Banner from './Components/Banner'
 import Grocery from './Pages/Grocery'
 import LandingPage from './Pages/LandingPage'
 import FashionPage from './Pages/FashionPage'
+import GroceryItemPage from './Pages/GroceryItemPage'
 
 function App() {
   
@@ -13,9 +14,9 @@ function App() {
     <>
     <Navbar bgColor="#E9E9E9" />
      <div className='bg-[#F5F5F5]'>
-        <FashionPage/>
+        <GroceryItemPage/>
      </div>
-     <Footer bgColor="#D5006D" />
+     {/* <Footer bgColor="#D5006D" /> */}
     </>
   )
 }
