@@ -599,16 +599,25 @@ useEffect(()=>{
         {filteredMenData && filteredMenData.length > 0 ? (
           filteredMenData.map((item) => (
             <WomensItemPage
-              key={item.id}
-              id={item.id}
-              model={item.model}
-              type={item.type}
-              description={item.description}
-              cprice={item.cprice}
-              sprice={item.sprice}
-              discount={item.discount}
-              image={item.image}
-              brand={item.brand}
+            key={item.id}
+            id={item.id}
+            product={item.product}
+            images={item.images}
+            type={item.type}
+            brand={item.brand}
+            name={item.name}
+            model={item.model}
+            cprice={item.cprice}
+            discount={item.discount}
+            rating={item.rating}
+            sprice={item.sprice}
+            MOQ={item.MOQ}
+            ratingsCount={item.ratingsCount}
+            reviewsCount={item.reviewsCount}
+            sizes={item.sizes}
+            deliveryDate={item.deliveryDate}
+            category={item.category}
+            description={item.description}
             />
           ))
         ) : (

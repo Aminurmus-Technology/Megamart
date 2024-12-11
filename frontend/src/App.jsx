@@ -12,6 +12,7 @@ import KidsPages from './Pages/KidsPages'
 import GroceryPages from './Pages/Grocery'
 import ProductDetail from './Pages/ProductDetail'
 import BeautyLandingPg from './Pages/beautyLandingPg'
+import OrderConfirmation from './Pages/OrderConfirmation'
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
       <Route path='/category/baby-kids' element={<KidsPages/>}/>  
       <Route path='/grocery' element={<GroceryPages/>}/> 
       <Route path='/beauty-landing' element={<BeautyLandingPg/>}/> 
+      <Route path="/product/:id" element={<ProductDetail />} /> 
 
         
     </Routes>

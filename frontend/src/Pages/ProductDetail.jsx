@@ -6,17 +6,18 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useLocation } from "react-router-dom";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import SellIcon from "@mui/icons-material/Sell";
 import ProductCarousel from "../Components/ProductCarousel";
 
-import { product } from "../Data/productdetail";
-import { products } from "../Data/products";
 import { locations } from "../Data/locations";
+import { offers } from "../Data/offers";
 
 const ProductDetail = () => {
+  const { state: product } = useLocation();
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
   const [isFavorited, setIsFavorited] = useState(false);
   const [location, setLocation] = React.useState("");
@@ -85,10 +86,10 @@ const ProductDetail = () => {
           </p>
           <div className="flex flex-row items-baseline mb-2">
             <p className="text-[17px] font-medium ml-1">
-              ₹{product.price - (product.price * product.discount) / 100}
+              ₹{(product.cprice - (product.cprice * product.discount) / 100).toFixed(2)}
             </p>
             <p className="text-[11px] font-medium text-[#969292] line-through ml-1">
-              ₹{product.price}
+              ₹{product.cprice}
             </p>
             <p className="text-[11px] font-medium text-[#0F6D0D] ml-1">
               ₹{product.discount}%off
@@ -121,7 +122,7 @@ const ProductDetail = () => {
             </div>
           </div>
           <div className="mb-4">
-            <OfferOnProduct product={product} />
+            <OfferOnProduct offers={offers} />
           </div>
           <div className="flex flex-col">
             <p className="text-[15px] font-bold text-[#5D5656] ml-1 mb-2">
@@ -195,12 +196,12 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      <div className="mb-3">
-        <ProductCarousel title="Recently Viewed" products={products} />
+      {/* <div className="mb-3">
+        <ProductCarousel title="Recently Viewed" products={menData} />
       </div>
       <div className="mb-2">
-        <ProductCarousel title="Similar Product" products={products} />
-      </div>
+        <ProductCarousel title="Similar Product" products={menData} />
+      </div> */}
     </div>
   );
 };
