@@ -13,6 +13,7 @@ import GroceryPages from './Pages/Grocery'
 import ProductDetail from './Pages/ProductDetail'
 import BeautyLandingPg from './Pages/beautyLandingPg'
 import OrderConfirmation from './Pages/OrderConfirmation'
+import GroceryItemPage from './Pages/GroceryItemPage'
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
       <Route path='/grocery' element={<GroceryPages/>}/> 
       <Route path='/beauty-landing' element={<BeautyLandingPg/>}/> 
       <Route path="/product/:id" element={<ProductDetail />} /> 
+      <Route path="/grocery/items" element={<GroceryItemPage />} /> 
 
         
     </Routes>
