@@ -13,6 +13,9 @@ import GroceryPages from './Pages/Grocery'
 import ProductDetail from './Pages/ProductDetail'
 import BeautyLandingPg from './Pages/beautyLandingPg'
 import OrderConfirmation from './Pages/OrderConfirmation'
+import GroceryItemPage from './Pages/GroceryItemPage'
+import Login from './Pages/Login'
+import Signup from './Pages/Signup'
 
 
 function App() {
@@ -30,12 +33,12 @@ function App() {
       <Route path='/grocery' element={<GroceryPages/>}/> 
       <Route path='/beauty-landing' element={<BeautyLandingPg/>}/> 
       <Route path="/product/:id" element={<ProductDetail />} /> 
-
-        
+      <Route path="/Login" element={<Login />} /> 
+      <Route path="/SignUp" element={<Signup />} /> 
+      <Route path="/cart" element={<OrderConfirmation />} /> 
+      <Route path="/grocery/items" element={<GroceryItemPage />} /> 
     </Routes>
     <Footer bgColor="#D5006D" />
     </>
   )
 }
-
-export default App
