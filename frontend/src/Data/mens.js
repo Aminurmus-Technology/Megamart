@@ -18,7 +18,7 @@ export const menData = [
     MOQ: "2",
     ratingsCount: 77,
     reviewsCount: 0,
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL","XXL"],
     deliveryDate: "Delivery by 25 Oct, Friday",
     category: "Clothing",
     description: "A comfortable and stylish sporty Mens Plain  with  fabric.",
