@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema(
     model: { type: String, required: true },  // Example: "Sporty Tee"
     cprice: { type: Number, required: true }, // Current price
     discount: { type: Number, required: true }, // Discount percentage
-    sprice: { type: Number, required: true }, // Selling price after discount
+    sprice: { type: Number, required: true }, // Selling price after discount 
     rating: { type: Number, default: 0 },    // Average product rating
     category: { type: String, required: true }, // Example: "Clothing"
     description: { type: String, required: true }, // Product description
