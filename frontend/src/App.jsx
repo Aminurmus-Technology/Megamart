@@ -1,8 +1,6 @@
 import './App.css'
 import Footer from "./Pages/Footer"
 import Navbar from './Components/Navbar'
-import Banner from './Components/Banner'
-import Grocery from './Pages/Grocery'
 import LandingPage from './Pages/LandingPage'
 import FashionPage from './Pages/FashionPage'
 import MensPage from './Pages/MensPage'
@@ -42,3 +40,5 @@ function App() {
     </>
   )
 }
+
+export default App
