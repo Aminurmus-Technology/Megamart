@@ -1,8 +1,6 @@
 import './App.css'
 import Footer from "./Pages/Footer"
 import Navbar from './Components/Navbar'
-import Banner from './Components/Banner'
-import Grocery from './Pages/Grocery'
 import LandingPage from './Pages/LandingPage'
 import FashionPage from './Pages/FashionPage'
 import MensPage from './Pages/MensPage'
@@ -14,6 +12,8 @@ import ProductDetail from './Pages/ProductDetail'
 import BeautyLandingPg from './Pages/beautyLandingPg'
 import OrderConfirmation from './Pages/OrderConfirmation'
 import GroceryItemPage from './Pages/GroceryItemPage'
+import Login from './Pages/Login'
+import Signup from './Pages/Signup'
 
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
 
   return (
     <>
-    <Navbar bgColor="#E9E9E9" />
+    <Navbar/>
     <Routes>
       <Route path='/' element={<LandingPage/>}/>
       <Route path='/fashion' element={<FashionPage/>}/>      
@@ -31,11 +31,12 @@ function App() {
       <Route path='/grocery' element={<GroceryPages/>}/> 
       <Route path='/beauty-landing' element={<BeautyLandingPg/>}/> 
       <Route path="/product/:id" element={<ProductDetail />} /> 
+      <Route path="/Login" element={<Login />} /> 
+      <Route path="/SignUp" element={<Signup />} /> 
+      <Route path="/cart" element={<OrderConfirmation />} /> 
       <Route path="/grocery/items" element={<GroceryItemPage />} /> 
-
-        
     </Routes>
-     <Footer bgColor="#D5006D" />
+    <Footer bgColor="#D5006D" />
     </>
   )
 }
