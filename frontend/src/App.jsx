@@ -14,6 +14,8 @@ import OrderConfirmation from './Pages/OrderConfirmation'
 import GroceryItemPage from './Pages/GroceryItemPage'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
+import AdminPanel from './Pages/admin-view/AdminPanel'
+import AddProduct from './Components/admin-view/AddProduct'
 
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
       <Route path="/SignUp" element={<Signup />} /> 
       <Route path="/cart" element={<OrderConfirmation />} /> 
       <Route path="/grocery/items" element={<GroceryItemPage />} /> 
+      <Route path="/AdminPanel" element={<AdminPanel />} />
+      <Route path="/AdminPanel/AddProduct" element={<AddProduct />} />
     </Routes>
     <Footer bgColor="#D5006D" />
     </>
