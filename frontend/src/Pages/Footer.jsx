@@ -7,7 +7,7 @@ import MailOutlineOutlinedIcon from "@mui/icons-material/MailOutlineOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 export default function Footer({ bgColor = "#877A35" }) {
   return (
-    <footer className="bg-[#102337] text-white">
+    <footer className="bg-[#102337] text-white relative">
       <div className={`flex items-center justify-between w-full h-[98px] max-[640px]:px-5 sm:px-11 lg:px-28 sm:text-[18px] lg:text-[24px]`} style={{ backgroundColor: bgColor }}>
         <h1>Connect with us on our social platforms</h1>
         <div className="grid grid-cols-3 gap-5 ">
