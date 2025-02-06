@@ -1,14 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SectionBarGrocery from "./../Components/SectionBarGrocery";
-import { GroceryItemData } from "../Data/GroceryItemData";
 import GroceryItemCard from "../Components/GroceryItemCard";
 import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
+import { fetchProducts } from "../services/api";
+
 
 function GroceryItemPage() {
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [openCategories, setOpenCategories] = useState({});
-  const [filteredItems, setFilteredItems] = useState(GroceryItemData);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false); // State to manage filter modal visibility
+
+  // Fetch products from the backend
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const response = await fetchProducts();
+        // Filter only grocery related items.
+        // (Assumes each grocery item has a property `department` with value "grocery")
+        const groceryItems = response.data.filter(
+          (item) =>
+            item.product &&
+            item.product.toLowerCase() === "grocery"
+        );
+        setFilteredItems(groceryItems);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    getProducts();
+  }, []);
 
   // Toggle category open/close
   const toggleCategory = (category) => {
@@ -22,14 +43,22 @@ function GroceryItemPage() {
   const handleSubCategoryChange = (subCategory) => {
     setSelectedSubCategory(subCategory);
     setIsFilterOpen(false); // Close filter modal after selecting a subcategory
-    if (subCategory === "") {
-      setFilteredItems(GroceryItemData); // Show all if no subcategory is selected
-    } else {
-      const filtered = GroceryItemData.filter((item) =>
-        item.name.toLowerCase().includes(subCategory.toLowerCase())
+    fetchProducts().then((response) => {
+      // Filter only grocery related items first
+      const groceryItems = response.data.filter(
+        (item) =>
+          item.category &&
+          item.category.toLowerCase().includes(subCategory)
       );
-      setFilteredItems(filtered);
-    }
+      if (subCategory === "") {
+        setFilteredItems(groceryItems); // Show all grocery items if no subcategory is selected
+      } else {
+        const filtered = groceryItems.filter((item) =>
+          item.category.toLowerCase().includes(subCategory.toLowerCase())
+        );
+        setFilteredItems(filtered);
+      }
+    });
   };
 
   return (
@@ -40,19 +69,19 @@ function GroceryItemPage() {
       <div className="flex flex-col lg:flex-row ">
         {/* Filter Button for Mobile */}
         <div className="flex justify-center">
-        <button
-          className="lg:hidden border border-gray-500 rounded-sm p-2 px-10 max-[620px]:text-sm max-[620px]:px-6 flex gap-2 justify-center  bg-white  m-2  "
-          onClick={() => setIsFilterOpen(!isFilterOpen)}
-        > 
-          <FilterListOutlinedIcon/>
-          Filter
-        </button>
+          <button
+            className="lg:hidden border border-gray-500 rounded-sm p-2 px-10 max-[620px]:text-sm max-[620px]:px-6 flex gap-2 justify-center bg-white m-2"
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+          >
+            <FilterListOutlinedIcon />
+            Filter
+          </button>
         </div>
         {/* Filter Section */}
         <div
           className={`${
             isFilterOpen ? "block" : "hidden"
-          } lg:block lg:basis-1/5 bg-white h-screen m-4 p-4 lg:static fixed inset-0 z-10 overflow-y-auto   lg:z-auto lg:overflow-visible`}
+          } lg:block lg:basis-1/5 bg-white h-screen m-4 p-4 lg:static fixed inset-0 z-10 overflow-y-auto lg:z-auto lg:overflow-visible`}
         >
           <h3 className="font-semibold mb-4">Filters</h3>
           <button
@@ -76,141 +105,27 @@ function GroceryItemPage() {
                 <ul className="ml-4">
                   <li
                     className={`cursor-pointer ${
-                      selectedSubCategory === "Dal" ? "text-blue-500" : ""
+                      selectedSubCategory === "dal" ? "text-blue-500" : ""
                     }`}
-                    onClick={() => handleSubCategoryChange("Dal")}
+                    onClick={() => handleSubCategoryChange("dal")}
                   >
                     Dal
                   </li>
                   <li
                     className={`cursor-pointer ${
-                      selectedSubCategory === "Atta" ? "text-blue-500" : ""
+                      selectedSubCategory === "atta" ? "text-blue-500" : ""
                     }`}
-                    onClick={() => handleSubCategoryChange("Atta")}
+                    onClick={() => handleSubCategoryChange("atta")}
                   >
                     Atta
                   </li>
                   <li
                     className={`cursor-pointer ${
-                      selectedSubCategory === "Pulses" ? "text-blue-500" : ""
+                      selectedSubCategory === "pulses" ? "text-blue-500" : ""
                     }`}
-                    onClick={() => handleSubCategoryChange("Pulses")}
+                    onClick={() => handleSubCategoryChange("pulses")}
                   >
                     Pulses
-                  </li>
-                </ul>
-              )}
-            </div>
-
-            {/* Beverages */}
-            <div>
-              <h4
-                className="font-semibold cursor-pointer flex justify-between"
-                onClick={() => toggleCategory("beverages")}
-              >
-                {openCategories["beverages"] ? "-" : "+"} Beverages
-              </h4>
-              {openCategories["beverages"] && (
-                <ul className="ml-4">
-                  <li
-                    className={`cursor-pointer ${
-                      selectedSubCategory === "Tea" ? "text-blue-500" : ""
-                    }`}
-                    onClick={() => handleSubCategoryChange("Tea")}
-                  >
-                    Tea
-                  </li>
-                  <li
-                    className={`cursor-pointer ${
-                      selectedSubCategory === "Coffee" ? "text-blue-500" : ""
-                    }`}
-                    onClick={() => handleSubCategoryChange("Coffee")}
-                  >
-                    Coffee
-                  </li>
-                  <li
-                    className={`cursor-pointer ${
-                      selectedSubCategory === "Juice" ? "text-blue-500" : ""
-                    }`}
-                    onClick={() => handleSubCategoryChange("Juice")}
-                  >
-                    Juice
-                  </li>
-                </ul>
-              )}
-            </div>
-
-            {/* Snacks */}
-            <div>
-              <h4
-                className="font-semibold cursor-pointer flex justify-between"
-                onClick={() => toggleCategory("snacks")}
-              >
-                {openCategories["snacks"] ? "-" : "+"} Snacks
-              </h4>
-              {openCategories["snacks"] && (
-                <ul className="ml-4">
-                  <li
-                    className={`cursor-pointer ${
-                      selectedSubCategory === "Chips" ? "text-blue-500" : ""
-                    }`}
-                    onClick={() => handleSubCategoryChange("Chips")}
-                  >
-                    Chips
-                  </li>
-                  <li
-                    className={`cursor-pointer ${
-                      selectedSubCategory === "Cookies" ? "text-blue-500" : ""
-                    }`}
-                    onClick={() => handleSubCategoryChange("Cookies")}
-                  >
-                    Cookies
-                  </li>
-                  <li
-                    className={`cursor-pointer ${
-                      selectedSubCategory === "Namkeen" ? "text-blue-500" : ""
-                    }`}
-                    onClick={() => handleSubCategoryChange("Namkeen")}
-                  >
-                    Namkeen
-                  </li>
-                </ul>
-              )}
-            </div>
-
-            {/* Personal Care */}
-            <div>
-              <h4
-                className="font-semibold cursor-pointer flex justify-between"
-                onClick={() => toggleCategory("personalCare")}
-              >
-                {openCategories["personalCare"] ? "-" : "+"} Personal Care
-              </h4>
-              {openCategories["personalCare"] && (
-                <ul className="ml-4">
-                  <li
-                    className={`cursor-pointer ${
-                      selectedSubCategory === "Shampoo" ? "text-blue-500" : ""
-                    }`}
-                    onClick={() => handleSubCategoryChange("Shampoo")}
-                  >
-                    Shampoo
-                  </li>
-                  <li
-                    className={`cursor-pointer ${
-                      selectedSubCategory === "Soap" ? "text-blue-500" : ""
-                    }`}
-                    onClick={() => handleSubCategoryChange("Soap")}
-                  >
-                    Soap
-                  </li>
-                  <li
-                    className={`cursor-pointer ${
-                      selectedSubCategory === "Toothpaste" ? "text-blue-500" : ""
-                    }`}
-                    onClick={() => handleSubCategoryChange("Toothpaste")}
-                  >
-                    Toothpaste
                   </li>
                 </ul>
               )}
@@ -221,7 +136,7 @@ function GroceryItemPage() {
         {/* Grocery Items Display */}
         <div className="lg:basis-4/5 py-2 flex flex-wrap">
           {filteredItems.map((item) => (
-            <div key={item.id} className="w-1/3 lg:w-1/4 max-[430px]:w-1/2">
+            <div key={item._id} className="w-1/3 lg:w-1/4 max-[430px]:w-1/2">
               <GroceryItemCard item={item} />
             </div>
           ))}

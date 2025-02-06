@@ -11,7 +11,13 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
-export const loginAdmin = (adminData) => API.post('/api/admin/login', adminData);
-export const fetchProducts = () => API.get('/api/products');
-export const fetchProductById = (id) => API.get(`/api/products/${id}`);
-export const addProduct = (productData) => API.post('/api/products', productData);
+// User Authentication
+export const signUpUser = (userData) => API.post('/user/signup', userData);
+export const loginUser = (loginData) => API.post('/user/login', loginData);
+export const fetchUserProfile = () => API.get('/user/profile');
+export const updatePassword = (passwordData) => API.put('/user/profile/password', passwordData);
+
+// Product API
+export const fetchProducts = () => API.get('/products');
+export const fetchProductById = (id) => API.get(`/products/${id}`);
+export const addProduct = (productData) => API.post('/products', productData);
