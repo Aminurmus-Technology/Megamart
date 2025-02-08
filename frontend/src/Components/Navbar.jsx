@@ -40,17 +40,17 @@ const Navbar = () => {
       <div className="flex grid-cols-2 gap-1">
         <a href="/AdminPanel">
           <button className="mt-5 sm:w-[90px] max-[640px]:text-[12px] md:w-[110px] lg:w-[125px] h-[50%] bg-white rounded-full">
-            <PersonIcon className="text-gray-500 sm:mr-1 md:mr-2" /> AdminPanel
+            <PersonIcon className="text-gray-500 sm:mr-1 md:mr-3" /> AdminPanel
           </button>
         </a>
         <a href="/Login">
           <button className="mt-5 sm:w-[90px] max-[640px]:text-[12px] md:w-[110px] lg:w-[125px] h-[50%] bg-white rounded-full">
-            <PersonIcon className="text-gray-500 sm:mr-1 md:mr-2" /> Login
+            <PersonIcon className="text-gray-500 sm:mr-1 md:mr-3" /> Login
           </button>
         </a>
         <a href="/SignUp">
           <button className="mt-5 sm:w-[90px] max-[640px]:text-[12px] md:w-[110px] lg:w-[125px] h-[50%] bg-white rounded-full">
-            <PersonIcon className="text-gray-500 sm:mr-1 md:mr-2" /> SignUp
+            <PersonIcon className="text-gray-500 sm:mr-1 md:mr-3" /> SignUp
           </button>
         </a>
         <a href="/cart">

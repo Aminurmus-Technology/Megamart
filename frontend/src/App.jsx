@@ -14,7 +14,7 @@ import OrderConfirmation from './Pages/OrderConfirmation'
 import GroceryItemPage from './Pages/GroceryItemPage'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
-import AdminPanel from './Pages/admin-view/AdminPanel'
+import AdminPanel from './Pages/AdminPanel'
 import AddProduct from './Components/admin-view/AddProduct'
 
 

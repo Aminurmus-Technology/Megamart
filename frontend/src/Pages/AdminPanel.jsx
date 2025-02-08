@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { MdDashboard } from "react-icons/md";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { BsCheckCircle } from "react-icons/bs";
-import Dashboard from "../../Components/admin-view/DashBoard";
-import Products from "../../Components/admin-view/Products";
+import Dashboard from "../Components/admin-view/DashBoard";
+import Products from "../Components/admin-view/Products";
 
 export default function AdminPanel() {
   const [selectedTab, setSelectedTab] = useState("dashboard");
