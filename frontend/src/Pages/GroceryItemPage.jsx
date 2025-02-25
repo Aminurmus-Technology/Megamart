@@ -15,9 +15,11 @@ function GroceryItemPage() {
   useEffect(() => {
     const getProducts = async () => {
       try {
+        console.log("Fetching products...");
         const response = await fetchProducts();
         // Filter only grocery related items.
         // (Assumes each grocery item has a property `department` with value "grocery")
+        console.log("API Response:", response.data);
         const groceryItems = response.data.filter(
           (item) =>
             item.product &&
@@ -147,4 +149,3 @@ function GroceryItemPage() {
 }
 
 export default GroceryItemPage;
-12
