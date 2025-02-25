@@ -10,7 +10,8 @@ dotenv.config();
 connectDB();
 
 
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
 app.use(express.json());
 
 
@@ -20,11 +21,11 @@ app.use("/user",  userRouter);
 
 //routing for product
 const productRouter = require('./routers/productRouter');
-app.use("/api/products", productRouter);
+app.use("/products", productRouter);
 
 //routing for admin
 const adminRouter = require("./routers/adminRouter");
-app.use("/api/admin", adminRouter);
+app.use("/admin", adminRouter);
 
 
 app.get('/',(req,res)=>{
