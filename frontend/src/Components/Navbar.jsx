@@ -37,29 +37,22 @@ const Navbar = () => {
           className="flex-auto pl-12 p-2 w-full h-full outline-none rounded-[12px]"
         />
       </div>
-
-      <div className="flex items-center gap-3">
-        {isLoggedIn ? (
-          <button
-            onClick={handleLogout}
-            className="px-3 py-1 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-          >
-            Logout
+      <div className="flex grid-cols-2 gap-1">
+        <a href="/AdminPanel">
+          <button className="mt-5 sm:w-[90px] max-[640px]:text-[12px] md:w-[110px] lg:w-[125px] h-[50%] bg-white rounded-full">
+            <PersonIcon className="text-gray-500 sm:mr-1 md:mr-3" /> AdminPanel
           </button>
-        ) : (
-          <>
-            <a href="/Login">
-              <button className="px-4 py-2 bg-white rounded-full flex items-center gap-1">
-                <PersonIcon className="text-gray-500" /> Login
-              </button>
-            </a>
-            <a href="/SignUp">
-              <button className="px-4 py-2 bg-white rounded-full flex items-center gap-1">
-                <PersonIcon className="text-gray-500" /> SignUp
-              </button>
-            </a>
-          </>
-        )}
+        </a>
+        <a href="/Login">
+          <button className="mt-5 sm:w-[90px] max-[640px]:text-[12px] md:w-[110px] lg:w-[125px] h-[50%] bg-white rounded-full">
+            <PersonIcon className="text-gray-500 sm:mr-1 md:mr-3" /> Login
+          </button>
+        </a>
+        <a href="/SignUp">
+          <button className="mt-5 sm:w-[90px] max-[640px]:text-[12px] md:w-[110px] lg:w-[125px] h-[50%] bg-white rounded-full">
+            <PersonIcon className="text-gray-500 sm:mr-1 md:mr-3" /> SignUp
+          </button>
+        </a>
         <a href="/cart">
           <button>
             <ShoppingCartIcon fontSize="large" className="text-gray-500" />
