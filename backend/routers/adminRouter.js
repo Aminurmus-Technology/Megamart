@@ -39,7 +39,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    const payload = { id: admin.id };
+    const payload = { id: admin.id, role:"admin" };
     const token = generateToken(payload);
     res.json({ token });
   } catch (error) {
@@ -76,7 +76,7 @@ router.get("/products/:id", jwtAuthMiddleware, async (req, res) => {
 });
 
 // add a new product
-router.post("/products", jwtAuthMiddleware, async (req, res) => {
+router.post("/products", jwtAuthMiddleware, async (req, res) => {  // have to add jwt authentication
   try {
     const newProduct = new Product(req.body);
     const product = await newProduct.save();
