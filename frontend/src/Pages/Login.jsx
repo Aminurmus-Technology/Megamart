@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../services/api"; 
+import { loginUser, loginAdmin } from "../services/api"; 
+
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [isAdmin, setIsAdmin] = useState(false); // Toggle for user/admin login
   const navigate = useNavigate();
 
   // Handle changes in form inputs
@@ -15,15 +17,24 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Send login data to the backend
-      const response = await loginUser(formData);
-      
-      // Assuming the response contains the JWT token as the response data
-      const token = response.data;
+      // Call login function based on selection
+      const response = isAdmin ? await loginAdmin(formData) : await loginUser(formData);
+
+      // Store token in local storage
+      const token = response.data.token || response.data;
       localStorage.setItem("token", token);
-      
-      // Redirect to the home page or dashboard
-      navigate("/");
+      const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT
+      const userRole = decodedToken.userData.role; // Extract role
+
+      console.log(userRole);
+
+      // Redirect based on user role
+      if (userRole === "admin") {
+        console.log("Redirecting to AdminPanel...");
+        navigate("/AdminPanel"); // Redirect admin to AdminPanel
+      } else {
+        navigate("/"); // Redirect normal user to home
+      }
     } catch (error) {
       console.error("Login failed:", error);
       alert("Login failed! Please check your credentials and try again.");
@@ -35,11 +46,34 @@ const Login = () => {
       <div className="absolute w-[400px] h-[400px] bg-custom-gradient rounded-full mt-5 right-0 sm:w-[700px] sm:h-[700px]"></div>
       <div className="relative w-full max-w-sm bg-white shadow-lg rounded-lg p-6 sm:p-8">
         <h2 className="text-center text-xl font-bold text-[#581863] mb-4">LOGIN</h2>
+
+        {/* Toggle Button for User/Admin Login */}
+        <div className="flex justify-center mb-4">
+          <button
+            type="button"
+            className={`w-1/2 px-3 py-2 text-sm font-medium rounded-l-lg ${
+              !isAdmin ? "bg-[#581863] text-white" : "bg-gray-200 text-gray-600"
+            }`}
+            onClick={() => setIsAdmin(false)}
+          >
+            User Login
+          </button>
+          <button
+            type="button"
+            className={`w-1/2 px-3 py-2 text-sm font-medium rounded-r-lg ${
+              isAdmin ? "bg-[#581863] text-white" : "bg-gray-200 text-gray-600"
+            }`}
+            onClick={() => setIsAdmin(true)}
+          >
+            Admin Login
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <input
               type="email"
-              name="email" // add name attribute to use in state update
+              name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="EMAIL"
@@ -50,7 +84,7 @@ const Login = () => {
           <div className="mb-6">
             <input
               type="password"
-              name="password" // add name attribute for state update
+              name="password"
               value={formData.password}
               onChange={handleChange}
               placeholder="PASSWORD"
@@ -65,6 +99,7 @@ const Login = () => {
             SIGN IN
           </button>
         </form>
+
         <p className="text-center text-sm mt-4">
           Don’t have an account?{" "}
           <a href="/SignUp" className="text-[#581863] hover:underline">SIGNUP</a>
