@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { addProduct } from "../../services/api";
 
 export default function AddProduct() {
   const [newProduct, setNewProduct] = useState({
@@ -34,9 +35,42 @@ export default function AddProduct() {
     setNewProduct({ ...newProduct, images: [...newProduct.images, ...imageUrls] });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(newProduct);
+
+    // Create the product data object without images
+    const productData = {
+      name: newProduct.name,
+      brand: newProduct.brand,
+      type: newProduct.type,
+      category: newProduct.category,
+      price: newProduct.price,
+      discount: newProduct.discount,
+      sizes: newProduct.sizes,
+      description: newProduct.description,
+    };
+
+    try {
+      const response = await addProduct(productData);
+      console.log("Product added:", response.data);
+      alert("Product added successfully!");
+
+      // Reset the form after successful submission
+      setNewProduct({
+        name: "",
+        brand: "",
+        type: "",
+        category: "",
+        price: "",
+        discount: "",
+        sizes: [],
+        description: "",
+        images: [],
+      });
+    } catch (error) {
+      console.error("Error adding product:", error);
+      alert("Failed to add product.");
+    }
   };
 
   return (
@@ -47,6 +81,7 @@ export default function AddProduct() {
           <input
             type="text"
             name="name"
+            value={newProduct.name}
             placeholder="Product Name"
             className="w-full p-3 border rounded"
             onChange={handleChange}
@@ -55,6 +90,7 @@ export default function AddProduct() {
           <input
             type="text"
             name="brand"
+            value={newProduct.brand}
             placeholder="Brand"
             className="w-full p-3 border rounded"
             onChange={handleChange}
@@ -63,6 +99,7 @@ export default function AddProduct() {
           <input
             type="text"
             name="type"
+            value={newProduct.type}
             placeholder="Type"
             className="w-full p-3 border rounded"
             onChange={handleChange}
@@ -70,6 +107,7 @@ export default function AddProduct() {
           />
           <select
             name="category"
+            value={newProduct.category}
             className="w-full p-3 border rounded"
             onChange={handleChange}
             required
@@ -85,6 +123,7 @@ export default function AddProduct() {
           <input
             type="number"
             name="price"
+            value={newProduct.price}
             placeholder="Price"
             className="w-full p-3 border rounded"
             onChange={handleChange}
@@ -93,6 +132,7 @@ export default function AddProduct() {
           <input
             type="number"
             name="discount"
+            value={newProduct.discount}
             placeholder="Discount"
             className="w-full p-3 border rounded"
             onChange={handleChange}
@@ -102,6 +142,7 @@ export default function AddProduct() {
 
         <textarea
           name="description"
+          value={newProduct.description}
           placeholder="Description"
           className="w-full p-3 border rounded"
           rows="4"

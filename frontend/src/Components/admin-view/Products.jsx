@@ -1,47 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchProducts ,deleteProductById} from "../../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartSolid, faHeart as faHeartRegular } from "@fortawesome/free-solid-svg-icons";
 
 export default function Products() {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Product 1",
-      description: "Description of Product 1",
-      model: "Model 1",
-      brand: "Brand 1",
-      type: "Type 1",
-      sprice: 1000,
-      cprice: 1200,
-      discount: 20,
-      liked: false,
-      images: ["https://via.placeholder.com/100"],
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      description: "Description of Product 2",
-      model: "Model 2",
-      brand: "Brand 2",
-      type: "Type 2",
-      sprice: 1500,
-      cprice: 1800,
-      discount: 15,
-      liked: false,
-      images: ["https://via.placeholder.com/100"],
-    },
-  ]);
+  const [products, setProducts] = useState([]);
+  
+  // Fetch products when the component mounts
+  useEffect(() => {
+    async function getProducts() {
+      try {
+        const response = await fetchProducts();
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    }
+    getProducts();
+  }, []);
 
-  const deleteProduct = (id) => {
-    setProducts(products.filter((product) => product.id !== id));
-  };
-
-  const toggleLike = (id) => {
-    setProducts(
-      products.map((product) =>
-        product.id === id ? { ...product, liked: !product.liked } : product
-      )
-    );
+  // Function to delete a product
+  const deleteProduct = async (id) => {
+    try {
+      await deleteProductById(id);
+      setProducts(products.filter((product) => product._id !== id));
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   };
 
   return (
@@ -49,13 +34,10 @@ export default function Products() {
       <h2 className="text-2xl font-bold mb-5">Products</h2>
       <ul>
         {products.map((product) => (
-          <li
-            key={product.id}
-            className="flex justify-between items-center p-3 border-b"
-          >
+          <li key={product._id} className="flex justify-between items-center p-3 border-b">
             <div className="product-item flex">
               <div className="product-image mr-4">
-                <img src={product.images[0]} alt={product.name} />
+                <img src={product.image} alt={product.name} />
               </div>
               <div className="span-element flex-1">
                 <div className="product-desc">
@@ -71,12 +53,10 @@ export default function Products() {
               </div>
             </div>
             <div>
-              <button className="bg-blue-500 text-white px-3 py-1 rounded mr-2">
-                Edit
-              </button>
+              <button className="bg-blue-500 text-white px-3 py-1 rounded mr-2">Edit</button>
               <button
                 className="bg-red-500 text-white px-3 py-1 rounded"
-                onClick={() => deleteProduct(product.id)}
+                onClick={() => deleteProduct(product._id)}
               >
                 Delete
               </button>
