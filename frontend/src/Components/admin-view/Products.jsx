@@ -24,6 +24,7 @@ export default function Products() {
     try {
       await deleteProductById(id);
       setProducts(products.filter((product) => product._id !== id));
+      alert("Product deleted successfully");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -36,8 +37,8 @@ export default function Products() {
         {products.map((product) => (
           <li key={product._id} className="flex justify-between items-center p-3 border-b">
             <div className="product-item flex">
-              <div className="product-image mr-4">
-                <img src={product.image} alt={product.name} />
+              <div className="product-image mr-4 ">
+                <img  src={product.images[0]} alt={product.name} />
               </div>
               <div className="span-element flex-1">
                 <div className="product-desc">

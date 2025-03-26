@@ -3,6 +3,7 @@ const router = express.Router();
 const Admin = require("../models/admin");
 const Product = require("../models/productSchema");
 const { jwtAuthMiddleware, generateToken } = require("../jwt");
+const { upload } = require("../config/cloudinary.js");
 
 
 
@@ -75,17 +76,32 @@ router.get("/products/:id", jwtAuthMiddleware, async (req, res) => {
   }
 });
 
-// add a new product
-router.post("/products", jwtAuthMiddleware, async (req, res) => {  // have to add jwt authentication
+// Add a new product (using Cloudinary secure URLs from the client)
+router.post("/products", jwtAuthMiddleware, async (req, res) => {
   try {
-    const newProduct = new Product(req.body);
-    const product = await newProduct.save();
-    res.status(201).json(product);
+    const { name, brand, type, category, price, discount, sizes, description, images } = req.body;
+    const sizesArray = typeof sizes === "string" ? sizes.split(",") : sizes;
+
+    const newProduct = new Product({
+      name,
+      brand,
+      type,
+      category,
+      price,
+      discount,
+      sizes: sizesArray,
+      description,
+      images, // This should be an array of secure URLs from Cloudinary
+    });
+
+    await newProduct.save();
+    res.status(201).json({ message: "Product added successfully", product: newProduct });
   } catch (error) {
-    console.error(error);
+    console.error("Error adding product:", error);
     res.status(500).json({ error: "Failed to add product" });
   }
 });
+
 
 // update a product
 router.put("/products/:id", jwtAuthMiddleware, async (req, res) => {
