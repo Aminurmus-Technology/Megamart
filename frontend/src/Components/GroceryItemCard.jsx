@@ -2,7 +2,7 @@ function GroceryItemCard({ item }) {
   return (
     <div className="bg-white m-2 lg:p-4 p-2 flex-row  ">
       <div className="flex justify-center  ">
-        <img src={item.image} alt="" />
+        <img src={item.images} alt="" />
       </div>
       <div className="p-2 flex-row  justify-center">
         <p className="text-xs flex justify-center font-semibold h-5">{item.model}</p>
