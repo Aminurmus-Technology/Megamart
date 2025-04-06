@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { fetchProducts ,deleteProductById} from "../../services/api";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartSolid, faHeart as faHeartRegular } from "@fortawesome/free-solid-svg-icons";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
-  
+  const navigate = useNavigate();
   // Fetch products when the component mounts
   useEffect(() => {
     async function getProducts() {
@@ -54,7 +55,7 @@ export default function Products() {
               </div>
             </div>
             <div>
-              <button className="bg-blue-500 text-white px-3 py-1 rounded mr-2">Edit</button>
+              <button className="bg-blue-500 text-white px-3 py-1 rounded mr-2" type="edit" onClick={navigate('/AdminPanel/AddProduct')} >Edit</button>
               <button
                 className="bg-red-500 text-white px-3 py-1 rounded"
                 onClick={() => deleteProduct(product._id)}
