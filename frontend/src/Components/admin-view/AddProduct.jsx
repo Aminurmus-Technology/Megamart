@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { addProduct } from "../../services/api";
+import { useLocation } from "react-router-dom";
 
 export default function AddProduct() {
+  const location = useLocation();
+  const productId = location.state?.productId || null; 
   const [newProduct, setNewProduct] = useState({
     name: "",
     brand: "",
@@ -16,7 +19,7 @@ export default function AddProduct() {
 
   const [selectedFiles, setSelectedFiles] = useState([]); // Store actual file objects
   const [loading, setLoading] = useState(false);
-  const [isNewPoduct, setIsNewProcuct] = useState(false);
+  const isNewPoduct = productId === null; 
 
   const handleChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
