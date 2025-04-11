@@ -4,7 +4,7 @@ const Admin = require("../models/admin");
 const Product = require("../models/productSchema");
 const { jwtAuthMiddleware, generateToken } = require("../jwt");
 const { upload } = require("../config/cloudinary.js");
-
+const Order = require("../models/order"); 
 
 
 // Admin signup route
@@ -122,6 +122,17 @@ router.delete("/products/:id", jwtAuthMiddleware, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to delete product" });
+  }
+});
+
+
+//fetch all orders
+router.get("/orders", async (req, res) => {
+  try {
+    const orders = await Order.find(); // Fetch all orders
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch orders" });
   }
 });
 
