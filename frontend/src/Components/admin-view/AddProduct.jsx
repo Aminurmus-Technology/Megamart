@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { addProduct } from "../../services/api";
+import { useLocation } from "react-router-dom";
 
 export default function AddProduct() {
+  const location = useLocation();
+  const productId = location.state?.productId || null; 
   const [newProduct, setNewProduct] = useState({
     name: "",
     brand: "",
@@ -16,6 +19,7 @@ export default function AddProduct() {
 
   const [selectedFiles, setSelectedFiles] = useState([]); // Store actual file objects
   const [loading, setLoading] = useState(false);
+  const isNewPoduct = productId === null; 
 
   const handleChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
@@ -30,7 +34,7 @@ export default function AddProduct() {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    
+
     if (files.length + newProduct.images.length > 5) {
       alert("You can only upload up to 5 images.");
       return;
@@ -38,11 +42,16 @@ export default function AddProduct() {
 
     setSelectedFiles([...selectedFiles, ...files]); // Store actual files
     const imagePreviews = files.map((file) => URL.createObjectURL(file));
-    setNewProduct({ ...newProduct, images: [...newProduct.images, ...imagePreviews] });
+    setNewProduct({
+      ...newProduct,
+      images: [...newProduct.images, ...imagePreviews],
+    });
   };
 
   const uploadImagesToCloudinary = async () => {
-    const cloudinaryUploadUrl = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`;
+    const cloudinaryUploadUrl = `https://api.cloudinary.com/v1_1/${
+      import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+    }/image/upload`;
     const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
     const uploadedImageUrls = [];
@@ -93,7 +102,7 @@ export default function AddProduct() {
     try {
       await addProduct(productData);
       alert("Product added successfully!");
-      
+
       // Reset form
       setNewProduct({
         name: "",
@@ -116,13 +125,45 @@ export default function AddProduct() {
 
   return (
     <div className="mt-10 p-6 bg-white rounded-lg shadow-lg w-3/4 mx-auto">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Add New Product</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-center">
+        Product Details
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-2 gap-4">
-          <input type="text" name="name" value={newProduct.name} placeholder="Product Name" className="w-full p-3 border rounded" onChange={handleChange} required />
-          <input type="text" name="brand" value={newProduct.brand} placeholder="Brand" className="w-full p-3 border rounded" onChange={handleChange} required />
-          <input type="text" name="type" value={newProduct.type} placeholder="Type" className="w-full p-3 border rounded" onChange={handleChange} required />
-          <select name="category" value={newProduct.category} className="w-full p-3 border rounded" onChange={handleChange} required>
+          <input
+            type="text"
+            name="name"
+            value={newProduct.name}
+            placeholder="Product Name"
+            className="w-full p-3 border rounded"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="brand"
+            value={newProduct.brand}
+            placeholder="Brand"
+            className="w-full p-3 border rounded"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="type"
+            value={newProduct.type}
+            placeholder="Type"
+            className="w-full p-3 border rounded"
+            onChange={handleChange}
+            required
+          />
+          <select
+            name="category"
+            value={newProduct.category}
+            className="w-full p-3 border rounded"
+            onChange={handleChange}
+            required
+          >
             <option value="">Select Category</option>
             <option value="Fashion">Fashion Mens</option>
             <option value="Fashion">Fashion Womens</option>
@@ -131,29 +172,92 @@ export default function AddProduct() {
             <option value="Beauty">Beauty</option>
             <option value="Home & Kitchen">Home & Kitchen</option>
           </select>
-          <input type="number" name="price" value={newProduct.price} placeholder="Price" className="w-full p-3 border rounded" onChange={handleChange} required />
-          <input type="number" name="discount" value={newProduct.discount} placeholder="Discount" className="w-full p-3 border rounded" onChange={handleChange} required />
+          {newProduct.category === "Fashion" && (
+            <div>
+              <label className="block font-medium mb-2">Available Sizes</label>
+              <div className="grid grid-cols-2 gap-4">
+                {["S", "M", "L", "XL", "XXL"].map((size) => (
+                  <label key={size} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      value={size}
+                      checked={newProduct.sizes.includes(size)}
+                      onChange={(e) => {
+                        const selectedSizes = e.target.checked
+                          ? [...newProduct.sizes, size]
+                          : newProduct.sizes.filter((s) => s !== size);
+                        setNewProduct({ ...newProduct, sizes: selectedSizes });
+                      }}
+                      className="w-4 h-4 text-purple-600"
+                    />
+                    {size}
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+          <input
+            type="number"
+            name="price"
+            value={newProduct.price}
+            placeholder="Price"
+            className="w-full p-3 border rounded"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="number"
+            name="discount"
+            value={newProduct.discount}
+            placeholder="Discount"
+            className="w-full p-3 border rounded"
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        <textarea name="description" value={newProduct.description} placeholder="Description" className="w-full p-3 border rounded" rows="4" onChange={handleChange} required></textarea>
+        <textarea
+          name="description"
+          value={newProduct.description}
+          placeholder="Description"
+          className="w-full p-3 border rounded"
+          rows="4"
+          onChange={handleChange}
+          required
+        ></textarea>
 
         {/* Image Upload */}
         <div>
           <label className="block font-medium">Upload Images (Max: 5)</label>
-          <input type="file" accept="image/*" multiple className="w-full p-2 border rounded" onChange={handleImageChange} />
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            className="w-full p-2 border rounded"
+            onChange={handleImageChange}
+          />
         </div>
 
         {/* Image Preview */}
         {newProduct.images.length > 0 && (
           <div className="grid grid-cols-5 gap-2 mt-3">
             {newProduct.images.map((image, index) => (
-              <img key={index} src={image} alt={`Preview ${index + 1}`} className="h-20 w-20 object-cover rounded border" />
+              <img
+                key={index}
+                src={image}
+                alt={`Preview ${index + 1}`}
+                className="h-20 w-20 object-cover rounded border"
+              />
             ))}
           </div>
         )}
 
-        <button type="submit" className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold" disabled={loading}>
-          {loading ? "Adding Product..." : "Add Product"}
+        <button
+          type="submit"
+          className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold"
+          disabled={loading}
+        >
+          {isNewPoduct ? "Add Product" : "Edit product" }
         </button>
       </form>
     </div>

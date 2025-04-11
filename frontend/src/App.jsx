@@ -54,7 +54,7 @@ function App() {
     <Navbar/>
     <Routes>
       <Route path="/" element={isAuthenticated() ? <LandingPage /> : <Navigate to="/Login" />} />
-      {/* <Route path="/" element={<LandingPage /> } /> */}
+       {/* <Route path="/" element={<LandingPage /> } /> */}
       <Route path='/fashion' element={<FashionPage/>}/>      
       <Route path='/category/men' element={<MensPage/>}/>  
       <Route path='/category/women' element={<WomenPage/>}/>  
@@ -68,8 +68,8 @@ function App() {
       <Route path="/grocery/items" element={<GroceryItemPage />} /> 
       <Route path="/AdminPanel" element={isAuthenticated() && isAdmin() ? <AdminPanel /> : <Navigate to="/Login" />} />
       <Route path="/AdminPanel/AddProduct" element={isAuthenticated() && isAdmin() ? <AddProduct /> : <Navigate to="/Login" />} />
-      {/* <Route path="/AdminPanel" element={ <AdminPanel /> } />
-      <Route path="/AdminPanel/AddProduct" element={ <AddProduct /> } /> */}
+       {/* <Route path="/AdminPanel" element={ <AdminPanel /> } />
+      <Route path="/AdminPanel/AddProduct" element={ <AddProduct /> } />  */}
 
 
     </Routes>
