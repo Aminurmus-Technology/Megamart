@@ -26,3 +26,4 @@ export const addProduct = (productData) => API.post("/admin/products", productDa
 });
 export const updateProduct = (id, productData) => API.put(`/admin/products/${id}`, productData);
 export const deleteProductById = (id) => API.delete(`/admin/products/${id}`);
+export const fetchOrders = () => API.get("admin/orders");
