@@ -1,26 +1,27 @@
 import { useState, useEffect } from "react";
+import { fetchOrders } from "../../services/api";
 
 export default function Dashboard() {
-  const initialOrders = Array.from({ length: 25 }, (_, i) => ({
-    id: 1000 + i,
-    customer: `Customer ${i + 1}`,
-    products: [
-      { name: "Product 1", quantity: Math.floor(Math.random() * 5) + 1, price: 150 },
-      { name: "Product 2", quantity: Math.floor(Math.random() * 5) + 1, price: 200 },
-      { name: "Product 3", quantity: Math.floor(Math.random() * 5) + 1, price: 100 },
-    ],
-    status: ["Pending", "Shipped", "Delivered"][0],
-    date: new Date(Date.now() - Math.random() * 1e10).toLocaleString(),
-    deliveryAddress: `Address ${i + 1}, City, Country`,
-    paymentMethod: ["UPI", "Cash on delivery", "Card"][Math.floor(Math.random() * 3)],
-  }));
-
-  const [orders, setOrders] = useState(initialOrders);
-  const [filteredOrders, setFilteredOrders] = useState(orders);
+  const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const ordersPerPage = 20;
+
+  // Fetch orders from the database
+  useEffect(() => {
+    async function getOrders() {
+      try {
+        const response = await fetchOrders();
+        setOrders(response.data);
+        setFilteredOrders(response.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    }
+    getOrders();
+  }, []);
 
   useEffect(() => {
     setFilteredOrders(
@@ -38,7 +39,7 @@ export default function Dashboard() {
   const handleStatusChange = (id, newStatus) => {
     setOrders((prevOrders) =>
       prevOrders.map((order) =>
-        order.id === id ? { ...order, status: newStatus } : order
+        order._id === id ? { ...order, status: newStatus } : order
       )
     );
   };
@@ -75,11 +76,11 @@ export default function Dashboard() {
           <tbody>
             {displayedOrders.map((order) => (
               <tr
-                key={order.id}
+                key={order._id}
                 className="border-b cursor-pointer hover:bg-gray-100"
                 onClick={() => setSelectedOrder(order)}
               >
-                <td className="p-3">{order.id}</td>
+                <td className="p-3">{order._id}</td>
                 <td className="p-3">{order.customer}</td>
                 <td className="p-3">{order.date}</td>
                 <td className="p-3">{order.deliveryAddress}</td>
@@ -89,7 +90,7 @@ export default function Dashboard() {
                   <select
                     className="p-2 border rounded"
                     value={order.status}
-                    onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                    onChange={(e) => handleStatusChange(order._id, e.target.value)}
                   >
                     <option value="Pending">Pending</option>
                     <option value="Shipped">Shipped</option>
@@ -123,24 +124,24 @@ export default function Dashboard() {
         </div>
       )}
       <div className="flex justify-between mt-4">
-          <button
-            className={`px-4 py-2 rounded ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"}`}
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-          <span className="text-lg font-semibold">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            className={`px-4 py-2 rounded ${currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"}`}
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
-        </div>
+        <button
+          className={`px-4 py-2 rounded ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"}`}
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span className="text-lg font-semibold">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          className={`px-4 py-2 rounded ${currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"}`}
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

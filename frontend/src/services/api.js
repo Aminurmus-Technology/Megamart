@@ -21,5 +21,9 @@ export const updatePassword = (passwordData) => API.put('/user/profile/password'
 // Product API
 export const fetchProducts = () => API.get('/products');
 export const fetchProductById = (id) => API.get(`/products/${id}`);
-export const addProduct = (productData) => API.post("/admin/products", productData);
-export const deleteProductById = (id) => API.delete(`admin/products/${id}`);
+export const addProduct = (productData) => API.post("/admin/products", productData, {
+    headers: { "Content-Type": "application/json" }, // Needed for image uploads
+});
+export const updateProduct = (id, productData) => API.put(`/admin/products/${id}`, productData);
+export const deleteProductById = (id) => API.delete(`/admin/products/${id}`);
+export const fetchOrders = () => API.get("admin/orders");

@@ -22,8 +22,8 @@ function GroceryItemPage() {
         console.log("API Response:", response.data);
         const groceryItems = response.data.filter(
           (item) =>
-            item.product &&
-            item.product.toLowerCase() === "grocery"
+            item.category &&
+            item.category.toLowerCase() === "grocery"
         );
         setFilteredItems(groceryItems);
       } catch (error) {
