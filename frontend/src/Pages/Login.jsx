@@ -1,43 +1,56 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { loginUser, loginAdmin } from "../services/api"; 
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [isAdmin, setIsAdmin] = useState(false); // Toggle for user/admin login
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
 
-  // Handle changes in form inputs
+  // Check if admin login was selected from navbar
+  useEffect(() => {
+    if (location.state?.isAdmin !== undefined) {
+      setIsAdmin(location.state.isAdmin);
+    }
+  }, [location.state]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
-      // Call login function based on selection
-      const response = isAdmin ? await loginAdmin(formData) : await loginUser(formData);
+      // For now, simulate login without backend
+      const mockUserData = {
+        email: formData.email,
+        role: isAdmin ? "admin" : "user",
+        name: formData.email.split('@')[0]
+      };
 
-      // Store token in local storage
-      const token = response.data.token || response.data;
-      localStorage.setItem("token", token);
-      const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT
-      const userRole = decodedToken.userData.role; // Extract role
+      // Use AuthContext to login
+      login(mockUserData, mockUserData.role);
 
-      console.log(userRole);
+      // Show success message
+      alert(`${isAdmin ? 'Admin' : 'User'} login successful!`);
 
       // Redirect based on user role
-      if (userRole === "admin") {
-        console.log("Redirecting to AdminPanel...");
-        navigate("/AdminPanel"); // Redirect admin to AdminPanel
+      if (isAdmin) {
+        navigate("/AdminPanel");
       } else {
-        navigate("/"); // Redirect normal user to home
+        navigate("/");
       }
+
     } catch (error) {
       console.error("Login failed:", error);
       alert("Login failed! Please check your credentials and try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -45,14 +58,16 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen relative px-4 sm:px-6 md:px-8">
       <div className="absolute w-[400px] h-[400px] bg-custom-gradient rounded-full mt-5 right-0 sm:w-[700px] sm:h-[700px]"></div>
       <div className="relative w-full max-w-sm bg-white shadow-lg rounded-lg p-6 sm:p-8">
-        <h2 className="text-center text-xl font-bold text-[#581863] mb-4">LOGIN</h2>
+        <h2 className="text-center text-xl font-bold text-[#581863] mb-4">
+          {isAdmin ? 'ADMIN LOGIN' : 'USER LOGIN'}
+        </h2>
 
         {/* Toggle Button for User/Admin Login */}
         <div className="flex justify-center mb-4">
           <button
             type="button"
-            className={`w-1/2 px-3 py-2 text-sm font-medium rounded-l-lg ${
-              !isAdmin ? "bg-[#581863] text-white" : "bg-gray-200 text-gray-600"
+            className={`w-1/2 px-3 py-2 text-sm font-medium rounded-l-lg transition-colors ${
+              !isAdmin ? "bg-[#581863] text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"
             }`}
             onClick={() => setIsAdmin(false)}
           >
@@ -60,8 +75,8 @@ const Login = () => {
           </button>
           <button
             type="button"
-            className={`w-1/2 px-3 py-2 text-sm font-medium rounded-r-lg ${
-              isAdmin ? "bg-[#581863] text-white" : "bg-gray-200 text-gray-600"
+            className={`w-1/2 px-3 py-2 text-sm font-medium rounded-r-lg transition-colors ${
+              isAdmin ? "bg-[#581863] text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"
             }`}
             onClick={() => setIsAdmin(true)}
           >
@@ -94,15 +109,21 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-[#581863] text-white py-2 rounded-lg"
+            disabled={isLoading}
+            className="w-full bg-[#581863] text-white py-2 rounded-lg hover:bg-[#4a1460] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            SIGN IN
+            {isLoading ? "SIGNING IN..." : "SIGN IN"}
           </button>
         </form>
 
         <p className="text-center text-sm mt-4">
-          Don’t have an account?{" "}
-          <a href="/SignUp" className="text-[#581863] hover:underline">SIGNUP</a>
+          Don't have an account?{" "}
+          <button 
+            onClick={() => navigate("/SignUp")} 
+            className="text-[#581863] hover:underline font-medium"
+          >
+            SIGN UP
+          </button>
         </p>
       </div>
     </div>

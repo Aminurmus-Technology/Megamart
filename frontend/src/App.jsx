@@ -16,65 +16,68 @@ import Login from './Pages/Login'
 import Signup from './Pages/Signup'
 import AdminPanel from './Pages/AdminPanel'
 import AddProduct from './Components/admin-view/AddProduct'
+import { AuthProvider, useAuth } from './context/AuthContext'
+import { CartProvider } from './context/CartContext'
+import AuthDemo from './Components/AuthDemo'
 
-// Function to check authentication
-const getToken = () => {
-  // Check if localStorage is available
-  if (typeof window !== "undefined" && window.localStorage) {
-    return localStorage.getItem("token");
+// Protected Route Component
+const ProtectedRoute = ({ children, requireAdmin = false }) => {
+  const { isLoggedIn, userRole } = useAuth();
+  
+  if (!isLoggedIn) {
+    return <Navigate to="/Login" />;
   }
-  return null; // Return null if localStorage is not available
+  
+  if (requireAdmin && userRole !== "admin") {
+    return <Navigate to="/" />;
+  }
+  
+  return children;
 };
 
-const isAuthenticated = () => !!localStorage.getItem("token");
-
-  const isAdmin = () => {
-  const token = getToken();
-  
-  if (!token) return false; // If token is missing, return false
-  
-  const tokenParts = token.split(".");
-  if (tokenParts.length !== 3) return false; // Ensure JWT structure is correct
-
-  try {
-    const decodedToken = JSON.parse(atob(tokenParts[1])); // Decode JWT payload
-    return decodedToken.userData.role === "admin"; // Check if role is admin
-  } catch (error) {
-    console.error("Error decoding token:", error);
-    return false; // Return false if decoding fails
-  }
-};
-
-
-function App() {
-  
-
+function AppRoutes() {
   return (
     <>
-    <Navbar/>
-    <Routes>
-      {/* <Route path="/" element={isAuthenticated() ? <LandingPage /> : <Navigate to="/Login" />} /> */}
-      <Route path="/" element={<LandingPage /> } />
-      <Route path='/fashion' element={<FashionPage/>}/>      
-      <Route path='/category/men' element={<MensPage/>}/>  
-      <Route path='/category/women' element={<WomenPage/>}/>  
-      <Route path='/category/baby-kids' element={<KidsPages/>}/>  
-      <Route path='/grocery' element={<GroceryPages/>}/> 
-      <Route path='/beauty-landing' element={<BeautyLandingPg/>}/> 
-      <Route path="/product/:id" element={<ProductDetail />} /> 
-      <Route path="/Login" element={<Login />} /> 
-      <Route path="/SignUp" element={<Signup />} /> 
-      <Route path="/cart" element={<OrderConfirmation />} /> 
-      <Route path="/grocery/items" element={<GroceryItemPage />} /> 
-      {/* <Route path="/AdminPanel" element={isAuthenticated() && isAdmin() ? <AdminPanel /> : <Navigate to="/Login" />} />
-      <Route path="/AdminPanel/AddProduct" element={isAuthenticated() && isAdmin() ? <AddProduct /> : <Navigate to="/Login" />} /> */}
-      <Route path="/AdminPanel" element={ <AdminPanel /> } />
-      <Route path="/AdminPanel/AddProduct" element={ <AddProduct /> } />
-
-
-    </Routes>
-    <Footer bgColor="#D5006D" />
+      <Navbar/>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path='/fashion' element={<FashionPage/>}/>      
+        <Route path='/category/men' element={<MensPage/>}/>  
+        <Route path='/category/women' element={<WomenPage/>}/>  
+        <Route path='/category/baby-kids' element={<KidsPages/>}/>  
+        <Route path='/grocery' element={<GroceryPages/>}/> 
+        <Route path='/beauty-landing' element={<BeautyLandingPg/>}/> 
+        <Route path="/product/:id" element={<ProductDetail />} /> 
+        <Route path="/Login" element={<Login />} /> 
+        <Route path="/SignUp" element={<Signup />} /> 
+        <Route path="/cart" element={<OrderConfirmation />} /> 
+        <Route path="/grocery/items" element={<GroceryItemPage />} /> 
+        
+        {/* Protected Admin Routes */}
+        <Route path="/AdminPanel" element={
+          <ProtectedRoute requireAdmin={true}>
+            <AdminPanel />
+          </ProtectedRoute>
+        } />
+        <Route path="/AdminPanel/AddProduct" element={
+          <ProtectedRoute requireAdmin={true}>
+            <AddProduct />
+          </ProtectedRoute>
+        } />
+      </Routes>
+      <Footer bgColor="#D5006D" />
+      <AuthDemo />
     </>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <CartProvider>
+        <AppRoutes />
+      </CartProvider>
+    </AuthProvider>
   )
 }
 

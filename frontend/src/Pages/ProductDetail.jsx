@@ -6,7 +6,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import StarRateIcon from "@mui/icons-material/StarRate";
@@ -15,18 +15,43 @@ import ProductCarousel from "../Components/ProductCarousel";
 
 import { locations } from "../Data/locations";
 import { offers } from "../Data/offers";
+import { useCart } from '../context/CartContext';
 
 const ProductDetail = () => {
   const { state: product } = useLocation();
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
   const [isFavorited, setIsFavorited] = useState(false);
   const [location, setLocation] = React.useState("");
+  const { addToCart, cart } = useCart();
+  const navigate = useNavigate();
+  const [addMsg, setAddMsg] = useState("");
 
   const handleChange = (event) => {
     setLocation(event.target.value);
   };
 
   const toggleFavorite = () => setIsFavorited(!isFavorited);
+
+  const handleAddToCart = () => {
+    addToCart({
+      ...product,
+      id: product._id || product.id, // ensure id field exists
+    });
+    setAddMsg("Added to cart!");
+    setTimeout(() => setAddMsg(""), 1500);
+  };
+
+  const handleBuyNow = () => {
+    // Add to cart if not already
+    const exists = cart.find(item => item.id === (product._id || product.id));
+    if (!exists) {
+      addToCart({
+        ...product,
+        id: product._id || product.id,
+      });
+    }
+    navigate('/cart');
+  };
 
   return (
     <div className="bg-[#E9E9E9]">
@@ -68,13 +93,16 @@ const ProductDetail = () => {
             </div>
           </div>
           <div className="flex flex-row justify-evenly ">
-            <button className="mx-5 w-[159px] h-[46px] bg-[#EDAE30] text-white ">
+            <button onClick={handleAddToCart} className="mx-5 w-[159px] h-[46px] bg-[#EDAE30] text-white ">
               ADD TO CART
             </button>
-            <button className="mx-5 w-[159px] h-[46px] bg-[#DA940A] text-white ">
+            <button onClick={handleBuyNow} className="mx-5 w-[159px] h-[46px] bg-[#DA940A] text-white ">
               BUY NOW
             </button>
           </div>
+          {addMsg && (
+            <div className="text-green-600 text-center mt-2 font-semibold">{addMsg}</div>
+          )}
         </div>
         <div className="flex-1">
           <p className="text-[15px] font-medium text-[#5D5656] mb-2 ">

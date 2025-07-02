@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { signUpUser } from "../services/api"; // Import API function
 
 const SignUp = () => {
@@ -7,6 +8,9 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -14,23 +18,47 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
 
-    try {
-      const response = await signUpUser({
-        email: formData.email,
-        password: formData.password,
-      });
+    if (formData.password.length < 6) {
+      alert("Password must be at least 6 characters long!");
+      return;
+    }
 
-      if (response.status === 201) {
-        alert("Account Created! Please Log In.");
+    setIsLoading(true);
+
+    try {
+      // For now, simulate signup without backend
+      const mockUserData = {
+        email: formData.email,
+        role: "user",
+        name: formData.email.split('@')[0]
+      };
+
+      // Store user data in localStorage (for demo purposes)
+      const existingUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+      const userExists = existingUsers.find(user => user.email === formData.email);
+      
+      if (userExists) {
+        alert("User with this email already exists!");
+        return;
       }
+
+      existingUsers.push(mockUserData);
+      localStorage.setItem("registeredUsers", JSON.stringify(existingUsers));
+
+      alert("Account Created Successfully! Please Log In.");
+      navigate("/Login");
+
     } catch (error) {
       console.error(error);
       alert("Signup Failed! Try Again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,6 +90,7 @@ const SignUp = () => {
               placeholder="CREATE PASSWORD"
               className="w-full p-3 text-sm rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#581863] focus:outline-none"
               required
+              minLength={6}
             />
           </div>
           <div className="mb-6">
@@ -73,18 +102,25 @@ const SignUp = () => {
               placeholder="CONFIRM PASSWORD"
               className="w-full p-3 text-sm rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#581863] focus:outline-none"
               required
+              minLength={6}
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-[#581863] text-white py-2 rounded-lg"
+            disabled={isLoading}
+            className="w-full bg-[#581863] text-white py-2 rounded-lg hover:bg-[#4a1460] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            CREATE ACCOUNT
+            {isLoading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT"}
           </button>
         </form>
         <p className="text-center text-sm mt-4">
           Already have an account?{" "}
-          <a href="/Login" className="text-[#581863] hover:underline">LOGIN</a>
+          <button 
+            onClick={() => navigate("/Login")} 
+            className="text-[#581863] hover:underline font-medium"
+          >
+            LOGIN
+          </button>
         </p>
       </div>
     </div>
