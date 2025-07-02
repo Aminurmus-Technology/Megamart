@@ -53,20 +53,19 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative flex justify-between items-center bg-[#E9E9E9] w-full h-[90px] sm:px-2 md:px-7 z-10">
-      <div
-        className="w-[13rem] sm:w-[9rem] lg:w-[11rem] cursor-pointer"
-        onClick={() => navigate("/")}
-      >
-        <img className="h-[110px]" src="./megamart_logo1.svg" alt="Logo" />
+    <nav className="relative flex justify-between items-center bg-[#E9E9E9] w-full h-[90px] px-6 sm:px-8 md:px-12 z-10 shadow-lg">
+      {/* Logo */}
+      <div className="cursor-pointer" onClick={() => navigate("/")}>
+        <img className="h-[80px]" src="./megamart_logo1.svg" alt="Logo" />
       </div>
 
-      <div className="max-[640px]:hidden relative flex items-center w-[30%] h-[50px]">
+      {/* Search Bar */}
+      <div className="hidden sm:flex relative items-center w-[30%] h-[50px]">
         <SearchIcon className="absolute left-3 text-gray-500" />
         <input
           type="text"
           placeholder="Search for Products, Brands and More"
-          className="flex-auto pl-12 p-2 w-full h-full outline-none rounded-[12px]"
+          className="flex-auto pl-12 p-2 w-full h-full outline-none rounded-[12px] border border-gray-300"
         />
       </div>
 
