@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DoneIcon from "@mui/icons-material/Done";
+import { useCart } from "../context/CartContext";
 import OrderSummary from "../Components/OrderSummary";
 import PaymentOption from "../Components/PaymentOption";
 
@@ -25,6 +26,7 @@ const cartItems = [
 ];
 
 function OrderConfirmation() {
+    const { cart, removeFromCart, clearCart } = useCart();
     const [items, setItems] = useState([]);
     const [itemsPrice, setItemsPrice] = useState(0);
     const [totalPayable, setTotalPayable] = useState(0);
@@ -89,7 +91,7 @@ function OrderConfirmation() {
                         </button>
                     </div>
                     {/*Order summary */}
-                    <OrderSummary cartItems={cartItems} />
+                    <OrderSummary cartItems={cart} removeFromCart={removeFromCart} clearCart={clearCart} />
 
                     {/*Payment Options */}
                     <PaymentOption/>
